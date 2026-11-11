@@ -1,16 +1,5 @@
-# Photo geolocator
+# Photo Geolocator
 
-This Python 3.13 entry fetches the trial's 25 photos, estimates broad regions
-from image pixels, and submits one coordinate answer for each photo.
+This entry reads the trial environment's photo list, fetches each JPEG, decodes baseline JPEG data in pure Python, and derives pixel statistics from a small box-averaged image. An ordered ruleset maps those features to one of the supplied world regions. Coordinates are jittered around each region with SHA-256 values derived from the trial seed and photo ID, so repeated runs produce the same answers. If one photo cannot be processed, a deterministic fallback coordinate is submitted for it.
 
-- A pure Python baseline JPEG decoder reconstructs grayscale or RGB images.
-- Box downsampling and simple color, terrain, sky, and edge features feed
-  transparent hand-written region rules.
-- SHA-256 seeded jitter makes each region guess deterministic; failed photos
-  receive a deterministic global fallback.
-
-Set `MAKEFUN_PROMPT_FILE`, `MAKEFUN_ENV_URL`, and optionally
-`MAKEFUN_TRIAL_SEED`, then run `python3 main.py`.
-
-The entry makes no model calls and needs no API key. Licensed under MIT;
-see `LICENSE`.
+The program uses only Python's standard library and makes no model calls. Its only network requests are to the environment's photo and answer endpoints.
